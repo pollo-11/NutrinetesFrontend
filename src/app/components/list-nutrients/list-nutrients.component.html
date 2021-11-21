@@ -1,0 +1,273 @@
+<div>
+  <div class="cabecera">
+    <h3 class="titleTable">LISTA DE NUTRIENTES</h3>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <img
+            src="https://www.pinclipart.com/picdir/big/370-3705571_dibujo-lupa-png-como-dibujar-una-lupa-clipart.png"
+            width="20"
+          />
+        </div>
+      </div>
+      <input
+        class="form-control si"
+        type="text"
+        name="searchTerm"
+        placeholder="Nombre ...."
+        [(ngModel)]="searchTerm"
+      />
+    </div>
+    <form #myForm="ngForm" class="contenfiltro">
+      <div class="input-group rango">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <span>Rango</span>
+          </div>
+        </div>
+        <input
+          class="form-control si"
+          type="number"
+          [(ngModel)]="minimo"
+          name="searchTerm"
+          placeholder="Min.."
+        />
+        <input
+          class="form-control si"
+          type="number"
+          [(ngModel)]="maximo"
+          name="searchTerm"
+          placeholder="Max.."
+        />
+      </div>
+      <button
+        class="btn btn_buscar"
+        (click)="buscarrda(minimo, maximo)"
+        [disabled]="!myForm.form.valid"
+      >
+        buscar
+      </button>
+    </form>
+  </div>
+  <div class="tableFull scroll">
+    <table class="table table-striped">
+      <thead>
+        <th class="titles_table">name</th>
+        <th class="titles_table">rda</th>
+        <th class="titles_table">wiki</th>
+        <th class="titles_table">required</th>
+        <th class="titles_table">type</th>
+        <th class="titles_table">tui</th>
+        <th class="titles_table">Accion</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of nutrientsSet | listFilter: searchTerm">
+          <td>{{ item.name }}</td>
+          <td>{{ item.rda }}</td>
+          <td>{{ item.wiki }}</td>
+          <td>{{ item.required }}</td>
+          <td>{{ item.type }}</td>
+          <td>{{ item.tui }}</td>
+          <td>
+            <button class="btn btn-sm" (click)="triggerModal(modalData, item)">
+              <img
+                src="https://cdn.icon-icons.com/icons2/2098/PNG/128/edit_icon_128873.png"
+                alt=""
+                width="25"
+              />
+            </button>
+
+            <button class="btn btn-sm" (click)="deleteNutrients(item.id)">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1017/1017530.png"
+                width="25"
+              />
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #modalData let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title titleTable" id="modal-basic-title">EDITAR AUTO</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div style="width: 400px; margin: auto">
+      <div class="submit-form">
+        <div class="form-group">
+          <label for="name">name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="marca"
+            required
+            [(ngModel)]="currentNutrients.name"
+            name="marca"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="author">rda</label>
+          <input
+            type="number"
+            class="form-control"
+            id="modelo"
+            required
+            [(ngModel)]="currentNutrients.rda"
+            name="modelo"
+          />
+        </div>
+        <div class="form-group">
+          <label for="author">wiki</label>
+          <input
+            type="text"
+            class="form-control"
+            id="modelo"
+            required
+            [(ngModel)]="currentNutrients.wiki"
+            name="modelo"
+          />
+        </div>
+        <div class="form-group">
+          <label for="author">required</label>
+          <input
+            type="text"
+            class="form-control"
+            id="modelo"
+            required
+            [(ngModel)]="currentNutrients.required"
+            name="modelo"
+          />
+        </div>
+        <div class="form-group">
+          <label for="author">type</label>
+          <input
+            type="text"
+            class="form-control"
+            id="modelo"
+            required
+            [(ngModel)]="currentNutrients.type"
+            name="modelo"
+          />
+        </div>
+        <div class="form-group">
+          <label for="author">tui</label>
+          <input
+            type="text"
+            class="form-control"
+            id="modelo"
+            required
+            [(ngModel)]="currentNutrients.tui"
+            name="modelo"
+          />
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-info"
+            (click)="updateNutrients()"
+            (click)="modal.close('Save click')"
+          >
+            ACTUALIZAR
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<hr />
+<div class="cabecera">
+  <h3 class="titleTable">BUSCAR NUTRIENTE</h3>
+  <form #f="ngForm" class="form-inline input-group">
+    <div class="input-group-prepend">
+      <button
+        (click)="retrievenutri(idNutrients)"
+        [disabled]="!f?.valid"
+        class="input-group-text"
+      >
+        <img
+          src="https://www.pinclipart.com/picdir/big/370-3705571_dibujo-lupa-png-como-dibujar-una-lupa-clipart.png"
+          width="20"
+        />
+      </button>
+    </div>
+    <input
+      type="text"
+      placeholder="ID ...."
+      [(ngModel)]="idNutrients"
+      id="name"
+      name="name"
+      class="form-control si"
+    />
+  </form>
+</div>
+
+<div class="buscarAutos">
+  <div class="r">
+    <label *ngIf="!currentNutrients"
+      ><span class="tituloDeAutos">{{ msgError }}</span></label
+    >
+    <div class="card" *ngIf="currentNutrients">
+      <div class="card-body">
+        <h5 class="card-title titleTable">Detallado Auto</h5>
+        <div>
+          <label
+            ><span class="tituloDeAutos">Name:</span>
+            {{ currentNutrients.name }}</label
+          >
+
+          <label
+            ><span class="tituloDeAutos">rda:</span>
+            {{ currentNutrients.rda }}</label
+          >
+
+          <label
+            ><span class="tituloDeAutos">wiki:</span>
+            {{ currentNutrients.wiki }}</label
+          >
+        </div>
+        <div>
+          <label
+            ><span class="tituloDeAutos">required:</span>
+            {{ currentNutrients.required }}</label
+          >
+
+          <label
+            ><span class="tituloDeAutos">type:</span>
+            {{ currentNutrients.type }}</label
+          >
+
+          <label
+            ><span class="tituloDeAutos">tui:</span>
+            {{ currentNutrients.tui }}</label
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="listContainer scroll">
+    <ul class="list-group">
+      <li
+        class="list-group-item"
+        *ngFor="let id of nutrientsSet; let i = index"
+        [class.active]="i == currentIndex"
+        (click)="setActiveNutrients(id, i)"
+      >
+        <div>{{ id.name }}</div>
+      </li>
+    </ul>
+  </div>
+</div>
